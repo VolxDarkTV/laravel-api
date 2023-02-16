@@ -5,9 +5,9 @@
 @endsection
 
 @section('main')
-    <h1>Show</h1>
-    <section class="container-fluid">
-        <div class="container">
+<section class="container-fluid">
+    <div class="container">
+            <h1>Show</h1>
 
             <div class="shadow card flex-grow-1 d-flex flex-column justify-content-between p-2">
 
