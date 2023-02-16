@@ -28,3 +28,11 @@ Route::post('/movie/update/{movie}', [MovieController::class, 'movieUpdate'])
     // Delete
 Route::get('/movie/delete/{movie}', [MovieController::class, 'movieDelete'])
     -> name('movie.delete');
+
+
+
+    // api.php
+// Controller
+use App\Http\Controllers\ApiController;
+
+Route::get('/api/v1/test', [ApiController::class, 'test']);
