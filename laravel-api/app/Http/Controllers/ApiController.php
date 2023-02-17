@@ -26,6 +26,27 @@ class ApiController extends Controller
         ]);
     }
 
+    public function movieStore(Request $request){
+
+        $data = $request -> all();
+
+        // Genre
+        $movie = Movie::make($data);
+        $genre = Genre::find($data['genre_id']);
+
+        $movie -> genre() -> associate($genre);
+        $movie -> save();
+
+        // Tag
+        $tags = Tag::find($data['tags_id']);
+        $movie -> tags() -> attach($tags);
+
+        return response() -> json([
+            'success' => true,
+            'response' => $movie,
+        ]);
+    }
+
     public function movieDelete(Movie $movie){
         $movie -> tags() -> sync([]);
         $movie -> delete();

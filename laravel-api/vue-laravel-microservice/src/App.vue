@@ -1,7 +1,7 @@
 <script>
 import axios from 'axios';
 
-const apiURL = 'http://localhost:8000/api/v1/';
+const apiURL = 'http://localhost:8000/api';
 export default{
 
   data(){
@@ -26,7 +26,7 @@ export default{
 
     deleteMovie(id){
 
-      axios.get(apiURL + 'movie/delete/' + id)
+      axios.get(apiURL + '/v1/movie/delete/' + id)
       .then(res => {
 
         const data = res.data;
@@ -57,8 +57,18 @@ export default{
 
       // Info Logs
       console.log('movie', movie);
-      console.log('movie_tag', this.movie_tags);
+      // console.log('movie_tag', this.movie_tags);
 
+      // Laravel Store Connection 
+      axios.post(apiURL + '/v1/movie/store/', movie)
+        .then(res => {
+          const data = res.data;
+          const success = data.success;
+          // console.log('data', data);
+          if(success){
+            this.updateMovies();
+          }
+        }).catch(err => console.error(err));
     },
 
 
@@ -66,7 +76,7 @@ export default{
 
     // API method
     updateMovies(){
-      axios.get(apiURL + 'movie')
+      axios.get(apiURL + '/v1/movie')
       .then(res => {
 
         const data = res.data;
