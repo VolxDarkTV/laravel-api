@@ -1,14 +1,39 @@
 <script>
 import axios from 'axios';
 
+const apiURL = 'http://localhost:8000/api/v1/';
 export default{
+
   data(){
+    
     return {
       movies:[],
     }
+
   },
-  mounted(){
-    axios.get('http://localhost:8000/api/v1/test')
+
+  methods:{
+
+    deleteMovie(id){
+
+      axios.get(apiURL + 'movie/delete/' + id)
+      .then(res => {
+
+        const data = res.data;
+        const success = data.success;
+
+
+        if(success){
+          this.updateMovies();
+        }
+        console.log(movies);
+      })
+      .catch(err => console.error(err));
+      
+    },
+
+    updateMovies(){
+      axios.get(apiURL + 'movie')
       .then(res => {
 
         const data = res.data;
@@ -21,6 +46,12 @@ export default{
         console.log(movies);
       })
       .catch(err => console.error(err));
+    }
+
+  },
+
+  mounted(){
+    this.updateMovies();
   },
 }
 </script>
@@ -30,6 +61,8 @@ export default{
     <ul>
       <li v-for="movie in movies" :key="movie.id">
         {{ movie.name }}
+
+        <button @click="deleteMovie(movie.id)">delete</button>
       </li>
     </ul>
 </template>

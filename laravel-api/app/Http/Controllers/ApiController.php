@@ -8,13 +8,23 @@ use App\Models\Movie;
 
 class ApiController extends Controller
 {
-    public function test()
+    public function movie()
     {   
         $movies = Movie::all();
 
         return response() -> json([
             'success' => true,
             'response' => $movies,
+        ]);
+    }
+
+    public function movieDelete(Movie $movie){
+        $movie -> tags() -> sync([]);
+        $movie -> delete();
+
+        return response() -> json([
+            'success' => true,
+
         ]);
     }
 }
