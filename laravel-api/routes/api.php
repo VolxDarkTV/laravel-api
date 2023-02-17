@@ -18,4 +18,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+// Controller
+use App\Http\Controllers\ApiController;
 
+Route::get('/v1/test', [ApiController::class, 'test']);
