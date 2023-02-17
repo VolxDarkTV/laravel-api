@@ -26,10 +26,10 @@ export default{
         if(success){
           this.updateMovies();
         }
-        console.log(movies);
+        console.log(this.movies);
       })
       .catch(err => console.error(err));
-      
+
     },
 
     updateMovies(){
