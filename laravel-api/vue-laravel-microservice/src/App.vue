@@ -8,6 +8,16 @@ export default{
     
     return {
       movies:[],
+      genres:[],
+      tags:[],
+
+      movie_name: '',
+      movie_year: '',
+      movie_cashOut: '',
+
+      movie_genre: '',
+      movie_tags: [],
+
     }
 
   },
@@ -26,24 +36,52 @@ export default{
         if(success){
           this.updateMovies();
         }
-        console.log(this.movies);
+        // console.log(this.movies);
       })
       .catch(err => console.error(err));
 
     },
 
+    createMovie(e){
+
+      e.preventDefault();
+
+      const movie = {
+        'name' : this.movie_name,
+        'year' : this.movie_year,
+        'cashOut' : this.movie_cashOut,
+        'genre_id' : this.movie_genre,
+        'tags_id' : this.movie_tags,
+
+      };
+
+      // Info Logs
+      console.log('movie', movie);
+      console.log('movie_tag', this.movie_tags);
+
+    },
+
+
+
+
+    // API method
     updateMovies(){
       axios.get(apiURL + 'movie')
       .then(res => {
 
         const data = res.data;
         const success = data.success;
-        const movies = data.response;
+        const response = data.response;
+        const movies = response.movies;
+        const genres = response.genres;
+        const tags = response.tags;
 
         if(success){
           this.movies = movies;
+          this.genres = genres;
+          this.tags = tags;
         }
-        console.log(movies);
+        // console.log(movies);
       })
       .catch(err => console.error(err));
     }
@@ -64,28 +102,29 @@ export default{
       <div class="card p-3">
         <h6 class="text-dark">Form</h6>
         <div class="d-flex flex-column gap-2">
-            <input type="text" name="name" id="name" placeholder="name">
-            <input type="number" name="year" id="year" placeholder="year">
-            <input type="number" name="cashOut" id="cashOut" placeholder="cashOut">
+            <input type="text" name="name" id="name" placeholder="name" v-model="movie_name">
+            <input type="number" name="year" id="year" placeholder="year" v-model="movie_year">
+            <input type="number" name="cashOut" id="cashOut" placeholder="cashOut" v-model="movie_cashOut">
             
             <!-- Genre -->
-            <!-- <select name="genre_id" id="genre_id">
+            <select name="genre_id" id="genre_id" v-model="movie_genre">
 
-              <option value="{{$genre -> id}}">{{$genre -> name}}</option>
+              <option v-for="genre in genres" :key="genre.id" :value="genre.id">{{genre.name}}</option>
 
-            </select> -->
+            </select>
 
-            <div>
+            <div class="text-dark" v-for="tag in tags" :key="tag.id">
 
               <!-- Tags -->
-              <!-- <input type="checkbox" name="tags_id[]" id="{{$tag -> id}}" value="{{$tag -> id}}">
-              <label for="{{$tag -> id}}">{{$tag -> name}}</label>
-              <br> -->
+              <input  type="checkbox" name="tags_id[]" :id="tag.id" :value="tag.id" v-model="movie_tags">
+              <label :for="tag.id">{{tag.name}}</label>
+              <br>
 
             </div>
+
             <div class="d-flex gap-3">
               <input type="submit" value="Cancel">
-              <input class="flex-grow-1" type="submit" value="Create">
+              <input class="flex-grow-1" type="submit" value="Create" @click="createMovie">
             </div>
         </div>
       </div>    
